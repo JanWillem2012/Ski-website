@@ -3,389 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wintersport Tips | Professionele Gids voor Skiën & Snowboarden</title>
-    <meta name="description" content="De ultieme gids vol professionele wintersport tips: van uitrusting en techniek tot veiligheid, beste bestemmingen en voorbereiding.">
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome voor iconen -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- AOS Animatie Library (veel scroll-animaties) -->
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
+    <title>Summit Masters | Pro Wintersport Tips</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
+        /* --- 1. BASIS INSTELLINGEN --- */
         :root {
-            --primary: #0d47a1;
-            --secondary: #42a5f5;
-            --accent: #ff4081;
-            --snow: #ffffff;
-            --dark: #1e1e1e;
+            --primary: #00d2ff; /* Ijsblauw */
+            --secondary: #3a7bd5; /* Diepblauw */
+            --dark: #0f172a; /* Zeer donkerblauw */
+            --light: #f8fafc; /* Sneeuwwit */
+            --accent: #ff4757; /* Signaal rood voor actie */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
-            color: var(--dark);
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        /* Hero met parallax-achtige animatie en sneeuw-effect */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
-            height: 100vh;
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- 2. ANIMATIE CLASSES (Worden getriggerd door JS) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* --- 3. NAVIGATIE & HAMBURGER --- */
+        nav {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
+            padding: 20px 5%;
+            background: rgba(15, 23, 42, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .hero::before {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://assets.codepen.io/3297118/snow.png');
-            animation: snow 20s linear infinite;
-            opacity: 0.6;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
         }
 
-        @keyframes snow {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 1000px; }
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
-        .hero h1 {
-            font-size: 4.5rem;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.7);
-            animation: fadeInDown 1.5s ease-out;
+        /* Hamburger Styles */
+        .burger {
+            display: none;
+            cursor: pointer;
         }
 
-        .hero p {
-            font-size: 1.5rem;
-            animation: fadeInUp 1.5s ease-out 0.3s both;
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--light);
+            margin: 5px;
+            transition: all 0.3s ease;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* --- 4. HERO SECTIE (Bovenkant) --- */
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-attachment: fixed; /* Parallax effect */
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+        header h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            animation: slideDown 1s ease-out;
         }
 
-        /* Navbar animatie */
-        .navbar {
-            transition: all 0.4s ease;
-            background: rgba(13, 71, 161, 0.95) !important;
-            backdrop-filter: blur(10px);
+        header p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            animation: slideUp 1s ease-out 0.5s backwards;
         }
 
-        .navbar.scrolled {
-            padding: 0.5rem 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        .btn {
+            padding: 15px 40px;
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: 700;
+            border-radius: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fadeIn 1s ease-out 1s backwards;
         }
 
-        /* Card hover animaties */
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+            background: var(--light);
+        }
+
+        /* --- 5. SECTIES ALGEMENE STIJL --- */
+        section {
+            padding: 80px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        /* --- 6. GRID KAARTEN (Voorbereiding) --- */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
         .card {
-            transition: all 0.4s ease;
-            border: none;
+            background: rgba(255,255,255,0.05);
+            padding: 40px 30px;
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.4s, background 0.4s;
+            text-align: center;
         }
 
         .card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.1);
+            border-color: var(--primary);
         }
 
-        .card img {
-            transition: transform 0.6s ease;
+        .card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
         }
 
-        .card:hover img {
-            transform: scale(1.15);
+        .card h3 {
+            margin-bottom: 15px;
+            color: var(--light);
         }
 
-        /* Section background animaties */
-        section {
-            padding: 100px 0;
+        /* --- 7. TIPS SECTIE (Met afbeelding) --- */
+        .tips-layout {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .tips-text {
+            flex: 1;
+        }
+
+        .tips-image {
+            flex: 1;
             position: relative;
         }
 
-        .section-alt {
-            background: rgba(255,255,255,0.9);
+        .tips-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 20px 20px 0 var(--primary);
+            transition: transform 0.5s;
         }
 
-        /* Footer */
+        .tips-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .tip-item {
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+        }
+
+        .tip-item h4 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        /* --- 8. CALL TO ACTION / FOOTER --- */
+        .cta {
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            text-align: center;
+        }
+
         footer {
-            background: var(--primary);
-            color: white;
-            padding: 60px 0 30px;
+            background: #050911;
+            padding: 40px 10%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8899a6;
+        }
+
+        .socials {
+            margin: 20px 0;
+        }
+
+        .socials a {
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .socials a:hover {
+            color: var(--primary);
+        }
+
+        /* --- 9. KEYFRAMES --- */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- 10. MEDIA QUERIES (Voor Mobiel/Tablet) --- */
+        @media screen and (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            
+            .nav-links {
+                position: absolute;
+                right: 0px;
+                height: 92vh;
+                top: 8vh;
+                background-color: var(--dark);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                width: 50%;
+                transform: translateX(100%);
+                transition: transform 0.5s ease-in;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            }
+
+            .nav-links li { opacity: 0; margin: 0; }
+            
+            .burger { display: block; }
+
+            /* Navigatie actief maken */
+            .nav-active {
+                transform: translateX(0%);
+            }
+
+            @keyframes navLinkFade {
+                from { opacity: 0; transform: translateX(50px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+
+            /* Burger animatie naar Kruisje */
+            .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .line2 { opacity: 0; }
+            .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar met hamburger menu -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand text-white fw-bold" href="#">Wintersport Tips</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#voorbereiding">Voorbereiding</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#techniek">Techniek</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#veiligheid">Veiligheid</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#bestemmingen">Bestemmingen</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#uitrusting">Uitrusting</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#contact">Contact</a></li>
-                </ul>
-            </div>
+    <nav>
+        <div class="logo"><i class="fas fa-mountain"></i> SUMMIT MASTERS</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#uitrusting">Uitrusting</a></li>
+            <li><a href="#techniek">Techniek</a></li>
+            <li><a href="#veiligheid">Veiligheid</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container" data-aos="zoom-in">
-            <h1 data-aos="fade-down" data-aos-delay="200">Wintersport Tips</h1>
-            <p data-aos="fade-up" data-aos-delay="400">Professionele gids voor een onvergetelijke ski- of snowboardvakantie</p>
-            <a href="#voorbereiding" class="btn btn-light btn-lg mt-4" data-aos="fade-up" data-aos-delay="600">Ontdek de tips</a>
+    <header id="home">
+        <h1>Verover de Pistes</h1>
+        <p>De ultieme gids voor skiërs en snowboarders. Van beginnersfouten tot expert technieken.</p>
+        <a href="#uitrusting" class="btn">Start Hier <i class="fas fa-arrow-down"></i></a>
+    </header>
+
+    <section id="uitrusting">
+        <h2 class="section-title reveal">De Perfecte Uitrusting</h2>
+        <div class="cards-container">
+            <div class="card reveal">
+                <i class="fas fa-layer-group"></i>
+                <h3>Het 3-Lagen Systeem</h3>
+                <p>Draag nooit katoen! Begin met thermokleding, dan een isolerende fleece laag, en eindig met een wind- en waterdichte hardshell.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fas fa-glasses"></i>
+                <h3>Goggles & Zicht</h3>
+                <p>Een goede bril beschermt tegen UV-straling en sneeuwblindheid. Kies een oranje lens voor bewolking en een donkere lens voor zon.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fas fa-hard-hat"></i>
+                <h3>Bescherming</h3>
+                <p>Een helm is verplicht in veel gebieden en redt levens. Vergeet ook je rugbeschermer (backprotector) niet voor het funpark.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fas fa-snowflake"></i>
+                <h3>Materiaal Onderhoud</h3>
+                <p>Laat je ski's of board elke 4 dagen waxen en slijpen. Scherpe randen geven grip op ijs, wax zorgt voor snelheid.</p>
+            </div>
         </div>
     </section>
 
-    <!-- Voorbereiding -->
-    <section id="voorbereiding" class="section-alt">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Voorbereiding op je Wintersport</h2>
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-right">
-                    <div class="card h-100">
-                        <img src="https://images.unsplash.com/photo-1543503103-7e6f1a2a8f3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Conditietraining">
-                        <div class="card-body">
-                            <h5 class="card-title">Conditie opbouwen</h5>
-                            <p class="card-text">Begin 8-12 weken voor vertrek met gerichte training: squats, lunges, core-oefeningen en cardio. Goede been- en rompkracht voorkomt blessures.</p>
-                        </div>
-                    </div>
+    <section id="techniek" style="background-color: #162032;">
+        <h2 class="section-title reveal">Verbeter Je Techniek</h2>
+        <div class="tips-layout">
+            <div class="tips-image reveal-left">
+                <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Skiër in actie">
+            </div>
+            <div class="tips-text">
+                <div class="tip-item reveal">
+                    <h4>1. Knieën Buigen</h4>
+                    <p>De meest gemaakte fout: te rechtop staan. Druk je schenen in de schoenen en houd je zwaartepunt laag voor maximale controle.</p>
                 </div>
-                <div class="col-md-4" data-aos="fade-up">
-                    <div class="card h-100">
-                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Paklijst">
-                        <div class="card-body">
-                            <h5 class="card-title">Paklijst & planning</h5>
-                            <p class="card-text">Maak een complete paklijst: helm, bril, handschoenen, thermokleding, zonnecrème (hoge factor). Boek lessen en materiaal ruim van tevoren.</p>
-                        </div>
-                    </div>
+                <div class="tip-item reveal">
+                    <h4>2. Kijk Waar Je Heen Wilt</h4>
+                    <p>Je lichaam volgt je ogen. Kijk niet naar je ski's, maar ver vooruit de berg af. Zo anticipeer je op hobbels en andere skiërs.</p>
                 </div>
-                <div class="col-md-4" data-aos="fade-left">
-                    <div class="card h-100">
-                        <img src="https://images.unsplash.com/photo-1605543746976-10c9f6e8eb79?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Reisverzekering">
-                        <div class="card-body">
-                            <h5 class="card-title">Verzekering & gezondheid</h5>
-                            <p class="card-text">Sluit een goede reis- en wintersportverzekering af. Laat je vaccineren en neem een EHBO-setje mee. Controleer lawineberichten.</p>
-                        </div>
-                    </div>
+                <div class="tip-item reveal">
+                    <h4>3. Gebruik Je Kanten</h4>
+                    <p>Carven doe je op de zijkant van je ski of board. Durf te leunen in de bocht en laat de staalkant het werk doen.</p>
+                </div>
+                <div class="tip-item reveal">
+                    <h4>4. Bovenlichaam Stil</h4>
+                    <p>Houd je bovenlichaam rustig en gericht naar het dal. Alleen je benen moeten het werk doen onder je lichaam.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Techniek Tips -->
-    <section id="techniek">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Techniek Tips voor Skiën & Snowboarden</h2>
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <img src="https://images.unsplash.com/photo-1605639110313-9d0eacc18c1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded shadow" alt="Ski techniek">
-                </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <h3>Skiën</h3>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Houd je gewicht op de buitenste ski bij bochten</li>
-                        <li class="list-group-item">Buig door je knieën en houd je handen vooruit</li>
-                        <li class="list-group-item">Oefen pizza (ploeg) en friet (parallel) voor controle</li>
-                        <li class="list-group-item">Kijk altijd in de richting waar je heen wilt</li>
-                    </ul>
-                </div>
+    <section id="veiligheid">
+        <h2 class="section-title reveal">Veiligheid Boven Alles</h2>
+        <div class="cards-container">
+            <div class="card reveal" style="border-color: var(--accent);">
+                <i class="fas fa-exclamation-triangle" style="color: var(--accent);"></i>
+                <h3>Piste Regels (FIS)</h3>
+                <p>De skiër voor je heeft altijd voorrang. Haal alleen in als je genoeg ruimte hebt en stop nooit op onoverzichtelijke plekken.</p>
             </div>
-            <div class="row align-items-center mt-5 flex-lg-row-reverse">
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="https://images.unsplash.com/photo-1576602976044-2c5f88292d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded shadow" alt="Snowboard techniek">
-                </div>
-                <div class="col-lg-6" data-aos="fade-right">
-                    <h3>Snowboarden</h3>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Leer vallen met je armen gestrekt om polsbreuken te voorkomen</li>
-                        <li class="list-group-item">Buig door je knieën en houd je schouders in de rijrichting</li>
-                        <li class="list-group-item">Gebruik je voorste voet om bochten in te zetten</li>
-                        <li class="list-group-item">Oefen eerst op de hielkant, daarna op de teenzijde</li>
-                    </ul>
-                </div>
+            <div class="card reveal">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Noodnummers</h3>
+                <p>Sla het lokale noodnummer op in je telefoon (vaak 112 in Europa, of 140/144 in Oostenrijk/Zwitserland). Installeer de SOS-app.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fas fa-wine-glass-alt"></i>
+                <h3>Après-ski met Mate</h3>
+                <p>Alcohol en skiën gaan niet samen. Bewaar dat biertje voor ná de laatste afdaling. Je reactievermogen neemt drastisch af.</p>
             </div>
         </div>
     </section>
 
-    <!-- Veiligheid -->
-    <section id="veiligheid" class="section-alt">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Veiligheid op de Piste</h2>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle fa-4x text-danger mb-3"></i>
-                        <h4>Lawinegevaar</h4>
-                        <p>Check altijd het lawinebericht. Draag bij off-piste een lawinepieper, schep en sonde.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="text-center">
-                        <i class="fas fa-rules fa-4x text-primary mb-3"></i>
-                        <h4>Pisteregels (FIS)</h4>
-                        <p>Houd rekening met anderen, pas snelheid aan, geef voorrang van boven en stop nooit midden op de piste.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="text-center">
-                        <i class="fas fa-helmet-safety fa-4x text-success mb-3"></i>
-                        <h4>Helm & bescherming</h4>
-                        <p>Draag altijd een helm. Rugbescherming en polsbeschermers zijn sterk aanbevolen.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="contact" class="cta">
+        <h2 class="reveal">Klaar voor de winter?</h2>
+        <p class="reveal">Boek je lessen, check je materiaal en ga ervoor!</p>
+        <br>
+        <a href="#" class="btn reveal">Abonneer op Nieuwsbrief</a>
     </section>
 
-    <!-- Bestemmingen -->
-    <section id="bestemmingen">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Beste Wintersport Bestemmingen</h2>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4" data-aos="flip-left">
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1540979872698-3d0b3413fc2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Oostenrijk">
-                        <div class="card-body">
-                            <h5>Oostenrijk – Sölden & St. Anton</h5>
-                            <p>Uitstekende sneeuwzekerheid, gezellige après-ski en pistes voor alle niveaus.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="flip-up">
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1551524166-2c99d7e99c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Frankrijk">
-                        <div class="card-body">
-                            <h5>Frankrijk – Les Trois Vallées</h5>
-                            <p>Het grootste aaneengesloten skigebied ter wereld met 600 km piste.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="flip-right">
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1589896564908-2b00c27e2c9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Zwitserland">
-                        <div class="card-body">
-                            <h5>Zwitserland – Zermatt</h5>
-                            <p>Adembenemend uitzicht op de Matterhorn, sneeuwzeker en luxe resorts.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Uitrusting -->
-    <section id="uitrusting" class="section-alt">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Beste Uitrusting Tips</h2>
-            <div class="row">
-                <div class="col-lg-8 mx-auto" data-aos="fade-up">
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>Ski's/Snowboard:</strong> Laat je adviseren op basis van lengte, gewicht en niveau. Huur eerst voordat je koopt.</li>
-                        <li class="list-group-item"><strong>Helm:</strong> Goede pasvorm is cruciaal. Kies een model met MIPS-technologie voor extra bescherming.</li>
-                        <li class="list-group-item"><strong>Bril:</strong> Cat. 3 of 4 lenzen voor wisselend weer. Anti-fog coating is essentieel.</li>
-                        <li class="list-group-item"><strong>Kleding:</strong> Laagjes-systeem: thermisch ondergoed, fleece middenlaag, waterdichte jas en broek.</li>
-                        <li class="list-group-item"><strong>Handschoenen:</strong> Waterdicht en ademend met goede isolatie. Neem een reserve paar mee.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact / Nieuwsbrief -->
-    <section id="contact">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Blijf op de Hoogte</h2>
-            <div class="row justify-content-center">
-                <div class="col-lg-6" data-aos="zoom-in">
-                    <div class="card p-4 shadow">
-                        <p class="text-center">Schrijf je in voor onze nieuwsbrief en ontvang exclusieve tips!</p>
-                        <form>
-                            <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Je e-mailadres" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Inschrijven</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Wintersport Tips</h5>
-                    <p>Je professionele partner voor een veilige en plezierige wintersportvakantie.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#home" class="text-white">Home</a></li>
-                        <li><a href="#voorbereiding" class="text-white">Voorbereiding</a></li>
-                        <li><a href="#veiligheid" class="text-white">Veiligheid</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contact</h5>
-                    <p><i class="fas fa-envelope"></i> info@wintersporttips.nl</p>
-                    <p>&copy; 2026 Wintersport Tips. Alle rechten voorbehouden.</p>
-                </div>
-            </div>
+        <div class="socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
+        <p>&copy; 2026 Summit Masters. Gemaakt voor de echte liefhebbers.</p>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true
+        // 1. HAMBURGER MENU LOGICA
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+
+            burger.addEventListener('click', () => {
+                // Toggle Nav
+                nav.classList.toggle('nav-active');
+
+                // Animate Links
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+
+                // Burger Animation
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        navSlide();
+
+        // 2. SCROLL ANIMATIES (Intersection Observer)
+        // Dit zorgt ervoor dat elementen pas verschijnen als je er naar toe scrolt
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left');
+
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Optioneel: stop met observeren na animatie
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.1 // Activeer als 10% van het element zichtbaar is
         });
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // 3. SMOOTH SCROLL VOOR NAV LINKS (Extra zacht)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Sluit menu op mobiel als er geklikt wordt
+                const nav = document.querySelector('.nav-links');
+                if(nav.classList.contains('nav-active')){
+                    document.querySelector('.burger').click();
+                }
+            });
         });
     </script>
 </body>
